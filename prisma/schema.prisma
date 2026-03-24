@@ -1,0 +1,267 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CreatorSourceType {
+  DEMO
+  MANUAL
+}
+
+enum CreatorPlatform {
+  INSTAGRAM
+  TIKTOK
+  YOUTUBE
+  OTHER
+}
+
+enum FollowerBand {
+  NANO
+  MICRO
+  RISING
+  ESTABLISHED
+  LARGE
+}
+
+enum CampaignGoal {
+  BRAND_AWARENESS
+  SALES_CONVERSIONS
+  LOCAL_FOOTFALL
+  USER_GENERATED_CONTENT
+  AFFILIATE_TEST_CAMPAIGN
+}
+
+enum SocialProofLevel {
+  NONE_YET
+  SOME_CUSTOMER_TRACTION
+  GROWING_BRAND
+  ESTABLISHED_BRAND
+}
+
+enum BrandTone {
+  PROFESSIONAL
+  FRIENDLY
+  PERSUASIVE
+}
+
+enum FitLevel {
+  STRONG
+  POSSIBLE
+  LOW
+}
+
+enum CollaborationType {
+  PAID_COLLAB
+  GIFTED_COLLAB
+  AFFILIATE_COLLAB
+  UGC_REQUEST
+  LOCAL_AWARENESS_PLAY
+  NOT_RECOMMENDED_YET
+}
+
+enum PipelineStage {
+  NEW
+  SHORTLISTED
+  READY_TO_CONTACT
+  CONTACTED
+  REPLIED
+  NEGOTIATING
+  AGREED
+  COMPLETED
+  REJECTED
+}
+
+enum ReminderStatus {
+  OPEN
+  COMPLETED
+}
+
+enum ActivityKind {
+  SYSTEM
+  PIPELINE_CREATED
+  STAGE_CHANGED
+  NOTE_ADDED
+  REMINDER_CREATED
+  REMINDER_COMPLETED
+  OUTREACH_SAVED
+  CUSTOM
+}
+
+enum OutreachChannel {
+  EMAIL
+  INSTAGRAM_DM
+  TIKTOK_DM
+}
+
+enum OutreachLength {
+  SHORT
+  MEDIUM
+}
+
+enum OutreachMessageType {
+  INITIAL_OUTREACH
+  FOLLOW_UP
+  GIFTED_COLLABORATION_PITCH
+  PAID_COLLABORATION_PITCH
+  UGC_REQUEST
+}
+
+model BusinessProfile {
+  id                       String            @id @default(cuid())
+  name                     String
+  website                  String?
+  productOrServiceSummary  String?
+  niche                    String?
+  targetAudience           String?
+  targetRegion             String?
+  budgetMin                Int?
+  budgetMax                Int?
+  campaignGoal             CampaignGoal?
+  socialProofLevel         SocialProofLevel?
+  socialProofNotes         String?
+  offerNotes               String?
+  brandToneDefault         BrandTone?        @default(FRIENDLY)
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
+  matches                  CreatorMatch[]
+  outreachDrafts           OutreachDraft[]
+  pipelineItems            PipelineItem[]
+
+  @@index([name])
+}
+
+model Creator {
+  id                         String             @id @default(cuid())
+  sourceType                 CreatorSourceType
+  handle                     String             @unique
+  displayName                String
+  platform                   CreatorPlatform
+  bio                        String?
+  nicheTags                  String[]
+  targetRegion               String?
+  creatorLocation            String?
+  followerCount              Int?
+  followerBand               FollowerBand?
+  contentStyle               String?
+  audienceNotes              String?
+  contactEmailOrContactNote  String?
+  commercialHistoryNotes     String?
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
+  matches                    CreatorMatch[]
+  outreachDrafts             OutreachDraft[]
+  pipelineItems              PipelineItem[]
+
+  @@index([sourceType])
+  @@index([platform])
+}
+
+model CreatorMatch {
+  id                         String             @id @default(cuid())
+  businessProfileId          String
+  creatorId                  String
+  audienceFitScore           Int
+  audienceFitSummary         String
+  pitchViabilityScore        Int
+  pitchViabilitySummary      String
+  campaignFitScore           Int
+  campaignFitSummary         String
+  overallScore               Int
+  fitLevel                   FitLevel
+  recommendedCollaborationType CollaborationType
+  mainReason                 String
+  softWarningMessage         String?
+  riskFlags                  String[]
+  nextStepGuidance           String
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
+  businessProfile            BusinessProfile    @relation(fields: [businessProfileId], references: [id], onDelete: Cascade)
+  creator                    Creator            @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  pipelineItems              PipelineItem[]
+
+  @@unique([businessProfileId, creatorId])
+  @@index([businessProfileId, overallScore(sort: Desc)])
+}
+
+model PipelineItem {
+  id                          String            @id @default(cuid())
+  businessProfileId           String
+  creatorId                   String
+  creatorMatchId              String?
+  currentStage                PipelineStage     @default(NEW)
+  recommendedCollaborationType CollaborationType?
+  latestOverallScore          Int?
+  latestScoreSummary          String?
+  statusNotes                 String?
+  proposedFeeNotes            String?
+  agreedFeeNotes              String?
+  deliverablesNotes           String?
+  createdAt                   DateTime          @default(now())
+  updatedAt                   DateTime          @updatedAt
+  businessProfile             BusinessProfile   @relation(fields: [businessProfileId], references: [id], onDelete: Cascade)
+  creator                     Creator           @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorMatch                CreatorMatch?     @relation(fields: [creatorMatchId], references: [id], onDelete: SetNull)
+  notes                       Note[]
+  activities                  Activity[]
+  reminders                   Reminder[]
+
+  @@unique([businessProfileId, creatorId])
+  @@index([businessProfileId, currentStage])
+}
+
+model OutreachDraft {
+  id               String                @id @default(cuid())
+  businessProfileId String
+  creatorId        String
+  channel          OutreachChannel
+  tone             BrandTone
+  length           OutreachLength
+  messageType      OutreachMessageType
+  subjectLine      String?
+  body             String
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  businessProfile  BusinessProfile       @relation(fields: [businessProfileId], references: [id], onDelete: Cascade)
+  creator          Creator               @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([businessProfileId, createdAt(sort: Desc)])
+}
+
+model Note {
+  id             String       @id @default(cuid())
+  pipelineItemId String
+  body           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  pipelineItem   PipelineItem @relation(fields: [pipelineItemId], references: [id], onDelete: Cascade)
+
+  @@index([pipelineItemId, createdAt(sort: Desc)])
+}
+
+model Activity {
+  id             String        @id @default(cuid())
+  pipelineItemId String
+  kind           ActivityKind  @default(SYSTEM)
+  message        String
+  createdAt      DateTime      @default(now())
+  pipelineItem   PipelineItem  @relation(fields: [pipelineItemId], references: [id], onDelete: Cascade)
+
+  @@index([pipelineItemId, createdAt(sort: Desc)])
+}
+
+model Reminder {
+  id             String         @id @default(cuid())
+  pipelineItemId String
+  title          String
+  dueDate        DateTime
+  status         ReminderStatus @default(OPEN)
+  note           String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  pipelineItem   PipelineItem   @relation(fields: [pipelineItemId], references: [id], onDelete: Cascade)
+
+  @@index([pipelineItemId, status, dueDate])
+}
