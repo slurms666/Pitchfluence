@@ -93,6 +93,7 @@ Copy `.env.example` to `.env.local` and fill in real values:
 ```env
 DATABASE_URL="postgresql://..."
 DIRECT_URL="postgresql://..."
+PG_POOL_MAX="1"
 APP_ACCESS_PASSCODE="your-shared-passcode"
 APP_ACCESS_COOKIE_SECRET="a-long-random-secret"
 ALLOW_DEMO_RESEED="false"
@@ -110,6 +111,7 @@ Recommended:
 
 - use the pooled connection string for `DATABASE_URL`
 - use the direct connection string for `DIRECT_URL`
+- keep `PG_POOL_MAX=1` for lightweight Supabase/Vercel demos unless you have a reason to raise it
 
 ### 4. Run Prisma migration
 
@@ -207,6 +209,7 @@ If you already have the app running elsewhere, set `PLAYWRIGHT_BASE_URL` first a
 3. Add these environment variables in Vercel:
    - `DATABASE_URL`
    - `DIRECT_URL`
+   - `PG_POOL_MAX` set to `1` for small demo deployments
    - `APP_ACCESS_PASSCODE`
    - `APP_ACCESS_COOKIE_SECRET`
    - `ALLOW_DEMO_RESEED` if needed

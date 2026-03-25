@@ -14,9 +14,13 @@ const connectionString =
   process.env.DIRECT_URL ??
   "postgresql://postgres:postgres@localhost:5432/postgres";
 
+const configuredPoolMax = Number(process.env.PG_POOL_MAX ?? "1");
+const poolMax = Number.isFinite(configuredPoolMax) && configuredPoolMax > 0 ? configuredPoolMax : 1;
+
 const prisma = new PrismaClient({
   adapter: new PrismaPg({
     connectionString,
+    max: poolMax,
   }),
 });
 

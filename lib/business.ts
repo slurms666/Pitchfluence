@@ -19,8 +19,9 @@ export async function getBusinessProfiles() {
   });
 }
 
-export async function getSelectedBusinessProfile() {
-  const businessProfiles = await getBusinessProfiles();
+async function getSelectedBusinessFromProfiles(
+  businessProfiles: Awaited<ReturnType<typeof getBusinessProfiles>>,
+) {
   const cookieStore = await cookies();
   const selectedId = cookieStore.get(SELECTED_BUSINESS_COOKIE_NAME)?.value;
 
@@ -31,11 +32,14 @@ export async function getSelectedBusinessProfile() {
   return businessProfiles.find((profile) => profile.id === selectedId) ?? businessProfiles[0] ?? null;
 }
 
+export async function getSelectedBusinessProfile() {
+  const businessProfiles = await getBusinessProfiles();
+  return getSelectedBusinessFromProfiles(businessProfiles);
+}
+
 export async function getSelectedBusinessContext(): Promise<SelectedBusinessContext> {
-  const [businesses, selectedBusiness] = await Promise.all([
-    getBusinessProfiles(),
-    getSelectedBusinessProfile(),
-  ]);
+  const businesses = await getBusinessProfiles();
+  const selectedBusiness = await getSelectedBusinessFromProfiles(businesses);
 
   return {
     businesses,
