@@ -129,21 +129,19 @@ export default async function PipelinePage({
                     </td>
                     <td className="px-5 py-4 text-sm text-ink-600">{item.businessProfile.name}</td>
                     <td className="px-5 py-4">
-                      <form action={updatePipelineStageAction}>
+                      <form action={updatePipelineStageAction} className="flex items-center gap-2">
                         <input name="pipelineItemId" type="hidden" value={item.id} />
                         <input name="redirectTo" type="hidden" value={`/pipeline?view=table${businessProfileId ? `&businessProfileId=${businessProfileId}` : ""}`} />
-                        <select
-                          className="select min-w-[180px]"
-                          defaultValue={item.currentStage}
-                          name="currentStage"
-                          onChange={(event) => event.currentTarget.form?.requestSubmit()}
-                        >
+                        <select className="select min-w-[180px]" defaultValue={item.currentStage} name="currentStage">
                           {pipelineStageValues.map((value) => (
                             <option key={value} value={value}>
                               {pipelineStageLabels[value]}
                             </option>
                           ))}
                         </select>
+                        <button className="button-secondary whitespace-nowrap" type="submit">
+                          Move
+                        </button>
                       </form>
                     </td>
                     <td className="px-5 py-4 text-sm font-semibold text-ink-900">{item.latestOverallScore ?? "-"}</td>
@@ -200,18 +198,16 @@ export default async function PipelinePage({
                         <form action={updatePipelineStageAction} className="space-y-2">
                           <input name="pipelineItemId" type="hidden" value={item.id} />
                           <input name="redirectTo" type="hidden" value={`/pipeline?view=kanban${businessProfileId ? `&businessProfileId=${businessProfileId}` : ""}`} />
-                          <select
-                            className="select"
-                            defaultValue={item.currentStage}
-                            name="currentStage"
-                            onChange={(event) => event.currentTarget.form?.requestSubmit()}
-                          >
+                          <select className="select" defaultValue={item.currentStage} name="currentStage">
                             {pipelineStageValues.map((value) => (
                               <option key={value} value={value}>
                                 {pipelineStageLabels[value]}
                               </option>
                             ))}
                           </select>
+                          <button className="button-secondary w-full" type="submit">
+                            Move
+                          </button>
                         </form>
                       </div>
                     </article>

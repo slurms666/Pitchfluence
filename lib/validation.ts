@@ -30,6 +30,17 @@ const optionalNumber = z.preprocess((value) => {
   return trimmed.length ? Number(trimmed) : undefined;
 }, z.number().int().nonnegative().optional());
 
+function optionalEnum<const TValues extends readonly [string, ...string[]]>(values: TValues) {
+  return z.preprocess((value) => {
+    if (typeof value !== "string") {
+      return value;
+    }
+
+    const trimmed = value.trim();
+    return trimmed.length ? trimmed : undefined;
+  }, z.enum(values).optional());
+}
+
 export const businessProfileSchema = z.object({
   name: z.string().trim().min(2, "Name is required"),
   website: optionalText,
@@ -39,11 +50,11 @@ export const businessProfileSchema = z.object({
   targetRegion: optionalText,
   budgetMin: optionalNumber,
   budgetMax: optionalNumber,
-  campaignGoal: z.enum(campaignGoalValues).optional(),
-  socialProofLevel: z.enum(socialProofLevelValues).optional(),
+  campaignGoal: optionalEnum(campaignGoalValues),
+  socialProofLevel: optionalEnum(socialProofLevelValues),
   socialProofNotes: optionalText,
   offerNotes: optionalText,
-  brandToneDefault: z.enum(brandToneValues).optional(),
+  brandToneDefault: optionalEnum(brandToneValues),
 });
 
 export const creatorSchema = z.object({
@@ -59,7 +70,7 @@ export const creatorSchema = z.object({
   targetRegion: optionalText,
   creatorLocation: optionalText,
   followerCount: optionalNumber,
-  followerBand: z.enum(followerBandValues).optional(),
+  followerBand: optionalEnum(followerBandValues),
   contentStyle: optionalText,
   audienceNotes: optionalText,
   contactEmailOrContactNote: optionalText,
@@ -72,7 +83,7 @@ export const pipelineUpdateSchema = z.object({
   proposedFeeNotes: optionalText,
   agreedFeeNotes: optionalText,
   deliverablesNotes: optionalText,
-  recommendedCollaborationType: z.enum(collaborationTypeValues).optional(),
+  recommendedCollaborationType: optionalEnum(collaborationTypeValues),
 });
 
 export const noteSchema = z.object({

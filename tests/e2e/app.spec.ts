@@ -13,10 +13,10 @@ test("critical MVP flow works end to end", async ({ page }) => {
   await page.getByLabel("Shared passcode").fill(passcode);
   await page.getByRole("button", { name: "Enter Pitchfluence" }).click();
 
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Dashboard", exact: true })).toBeVisible();
 
   await page.getByRole("link", { name: "Create business profile" }).first().click();
-  await expect(page.getByRole("heading", { name: "Create Business Profile" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Create Business Profile", exact: true })).toBeVisible();
 
   await page.getByLabel("Business name").fill(businessName);
   await page.getByLabel("Product or service summary").fill("a friendly stationery brand for creative freelancers");
@@ -29,7 +29,7 @@ test("critical MVP flow works end to end", async ({ page }) => {
   await expect(page.getByRole("heading", { name: businessName })).toBeVisible();
 
   await page.getByRole("link", { name: "Creators" }).click();
-  await expect(page.getByRole("heading", { name: "Creators" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Creators", exact: true })).toBeVisible();
 
   await page.getByRole("link", { name: "Add manual creator" }).click();
   await page.getByLabel("Display name").fill(creatorName);
@@ -46,33 +46,33 @@ test("critical MVP flow works end to end", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Open pipeline item" })).toBeVisible();
   await page.getByRole("link", { name: "Open pipeline item" }).click();
 
-  await expect(page.getByText("Shortlisted")).toBeVisible();
+  await expect(page.getByLabel("Current stage")).toHaveValue("SHORTLISTED");
   await page.getByLabel("Add note").fill("Warm niche overlap for a first outreach test.");
   await page.getByRole("button", { name: "Add note" }).click();
-  await expect(page.getByText("Warm niche overlap for a first outreach test.")).toBeVisible();
+  await expect(page.getByText("Warm niche overlap for a first outreach test.", { exact: true })).toBeVisible();
 
   await page.getByLabel("Reminder title").fill("Send first outreach");
   await page.getByLabel("Due date").fill(reminderDate);
   await page.getByLabel("Reminder note").fill("Reference their latest workflow post.");
   await page.getByRole("button", { name: "Create reminder" }).click();
-  await expect(page.getByText("Send first outreach")).toBeVisible();
+  await expect(page.getByText("Send first outreach", { exact: true })).toBeVisible();
 
   await page.getByLabel("Current stage").selectOption("CONTACTED");
   await page.getByRole("button", { name: "Save pipeline details" }).click();
-  await expect(page.getByText("Contacted")).toBeVisible();
+  await expect(page.getByLabel("Current stage")).toHaveValue("CONTACTED");
 
   await page.getByRole("link", { name: "Generate outreach" }).first().click();
-  await expect(page.getByRole("heading", { name: "Outreach" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Outreach", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Generate draft" }).click();
   await expect(page.getByRole("button", { name: "Save draft" })).toBeVisible();
   await page.getByRole("button", { name: "Save draft" }).click();
-  await expect(page.getByText("Draft saved")).toBeVisible();
+  await expect(page.getByText("Draft saved", { exact: true })).toBeVisible();
 
   await page.goto("/pipeline?view=kanban");
-  await expect(page.getByRole("heading", { name: "Pipeline" })).toBeVisible();
-  await expect(page.getByText("Contacted")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pipeline", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Contacted", exact: true })).toBeVisible();
 
   await page.goto("/pipeline?view=table");
-  await expect(page.getByRole("heading", { name: "Pipeline" })).toBeVisible();
-  await expect(page.getByText(creatorName)).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pipeline", exact: true })).toBeVisible();
+  await expect(page.getByText(creatorName, { exact: true })).toBeVisible();
 });

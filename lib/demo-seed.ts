@@ -335,15 +335,17 @@ export async function resetAndSeedDemoData(prisma: PrismaClient) {
   const createdCreators = new Map<string, { id: string; displayName: string }>();
 
   for (const business of businessProfiles) {
+    const { slug, ...businessData } = business;
+
     const created = await prisma.businessProfile.create({
-      data: business,
+      data: businessData,
       select: {
         id: true,
         name: true,
       },
     });
 
-    createdBusinesses.set(business.slug, created);
+    createdBusinesses.set(slug, created);
   }
 
   for (const creator of creators) {
