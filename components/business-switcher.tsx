@@ -29,7 +29,7 @@ export function BusinessSwitcher({ businesses, selectedBusinessId }: BusinessSwi
     <form action={setSelectedBusinessAction} className="flex min-w-[260px] items-center gap-3">
       <input name="redirectTo" type="hidden" value={redirectTo} />
       <select
-        className="select"
+        className="select min-w-[280px] rounded-[20px] border-white/70 bg-white/90"
         defaultValue={selectedBusinessId ?? businesses[0]?.id}
         name="businessProfileId"
         onChange={(event) => event.currentTarget.form?.requestSubmit()}

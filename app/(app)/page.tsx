@@ -18,9 +18,9 @@ function MetricCard({
 }) {
   return (
     <article className="card-surface p-5">
-      <p className="text-sm font-medium text-ink-500">{label}</p>
-      <p className="mt-3 text-3xl font-semibold tracking-tight text-ink-900">{value}</p>
-      <p className="mt-2 text-sm text-ink-600">{hint}</p>
+      <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-ink-500">{label}</p>
+      <p className="mt-3 font-display text-[2rem] font-semibold leading-none text-ink-900">{value}</p>
+      <p className="mt-3 text-sm leading-6 text-ink-600">{hint}</p>
     </article>
   );
 }

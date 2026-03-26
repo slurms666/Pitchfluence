@@ -43,14 +43,16 @@ const config: Config = {
         }
       },
       boxShadow: {
-        soft: "0 20px 45px -24px rgba(23, 28, 36, 0.22)",
+        soft: "0 24px 58px -30px rgba(15, 20, 26, 0.24), 0 10px 24px -18px rgba(34, 40, 51, 0.12)",
       },
       backgroundImage: {
         "graph-paper":
           "linear-gradient(to right, rgba(57,65,81,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(57,65,81,0.06) 1px, transparent 1px)",
       },
       fontFamily: {
-        sans: ["var(--font-manrope)", "sans-serif"],
+        sans: ["var(--font-plus-jakarta)", "sans-serif"],
+        display: ["var(--font-sora)", "var(--font-plus-jakarta)", "sans-serif"],
+        mono: ["var(--font-ibm-plex-mono)", "monospace"],
       },
     },
   },

@@ -11,30 +11,30 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-[280px] shrink-0 flex-col border-r border-white/70 bg-white/80 px-5 py-6 backdrop-blur lg:flex">
-      <div className="mb-8">
-        <Link className="inline-flex items-center gap-3" href="/">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-ink-900 text-sm font-bold text-white">
+    <aside className="hidden w-[288px] shrink-0 flex-col border-r border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(248,251,255,0.82))] px-5 py-6 backdrop-blur-xl lg:flex">
+      <div className="mb-9">
+        <Link className="inline-flex items-center gap-3.5" href="/">
+          <div className="flex h-12 w-12 items-center justify-center rounded-[20px] bg-gradient-to-br from-ink-900 via-ink-900 to-ink-700 font-mono text-sm font-semibold tracking-[0.18em] text-white shadow-soft">
             PF
           </div>
           <div>
-            <p className="text-lg font-semibold tracking-tight text-ink-900">{APP_NAME}</p>
-            <p className="text-xs text-ink-500">Influencer outreach copilot</p>
+            <p className="font-display text-[1.2rem] font-semibold tracking-[-0.04em] text-ink-900">{APP_NAME}</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">Influencer outreach copilot</p>
           </div>
         </Link>
       </div>
 
-      <nav className="space-y-1">
+      <nav className="space-y-1.5">
         {dashboardLinks.map((link) => {
           const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
           return (
             <Link
               key={link.href}
               className={cn(
-                "flex items-center rounded-2xl px-4 py-3 text-sm font-medium transition",
+                "flex items-center rounded-[20px] px-4 py-3 text-sm font-medium transition",
                 active
-                  ? "bg-ink-900 text-white shadow-soft"
-                  : "text-ink-600 hover:bg-ink-100 hover:text-ink-900",
+                  ? "bg-gradient-to-br from-ink-900 via-ink-900 to-ink-700 text-white shadow-soft"
+                  : "text-ink-600 hover:bg-white/90 hover:text-ink-900",
               )}
               href={link.href}
             >
@@ -44,9 +44,9 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto rounded-3xl border border-ink-100 bg-ink-50 p-4">
-        <p className="text-sm font-semibold text-ink-900">Access Gate</p>
-        <p className="mt-1 text-sm text-ink-600">
+      <div className="mt-auto rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(249,251,253,0.9),rgba(243,247,250,0.85))] p-5 shadow-soft">
+        <p className="font-display text-lg font-semibold text-ink-900">Access Gate</p>
+        <p className="mt-1 text-sm leading-6 text-ink-600">
           Protected by a shared passcode so you can demo the app without full auth in v1.
         </p>
         <form action={logoutAction} className="mt-4">

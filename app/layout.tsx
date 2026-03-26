@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { IBM_Plex_Mono, Plus_Jakarta_Sans, Sora } from "next/font/google";
 
 import "@/app/globals.css";
 import { APP_NAME } from "@/lib/constants";
 
-const manrope = Manrope({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-plus-jakarta",
+});
+
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-sora",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-ibm-plex-mono",
 });
 
 export const metadata: Metadata = {
@@ -18,7 +29,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html data-scroll-behavior="smooth" lang="en">
-      <body className={manrope.variable}>{children}</body>
+      <body className={`${plusJakartaSans.variable} ${sora.variable} ${ibmPlexMono.variable} font-sans`}>
+        {children}
+      </body>
     </html>
   );
 }

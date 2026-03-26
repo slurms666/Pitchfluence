@@ -13,11 +13,11 @@ export default async function ProtectedLayout({ children }: Readonly<{ children:
     <div className="min-h-screen lg:flex">
       <Sidebar />
       <div className="min-h-screen flex-1">
-        <header className="sticky top-0 z-20 border-b border-white/80 bg-white/80 px-4 py-4 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-20 border-b border-white/80 bg-white/70 px-4 py-4 backdrop-blur-xl lg:px-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="text-sm font-semibold text-ink-900">Single-user workspace</p>
-              <p className="text-sm text-ink-500">
+              <p className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-ink-500">Single-user workspace</p>
+              <p className="mt-1 text-sm leading-6 text-ink-600">
                 Switch the active business profile to score creators and view the right pipeline.
               </p>
             </div>
